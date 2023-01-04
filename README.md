@@ -9,6 +9,7 @@ Running Instructions: (assuming on Linux)
 	- python3 client/client.py will open the plotter device.
 	
 4.The user may click on two points on the graph then the plotter will draw the shortest path.
+	- python3 client/client.py will open the plotter device.
 	- The user can continuously click on points of the graph
   	- If the plotter window is closed after finishing writing a path, the program will stop.
 	
