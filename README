@@ -1,0 +1,131 @@
+Name: JULIA DANTAS
+SID:  1626063
+CCID: jdantas
+CMPUT 275, Winter 2022
+
+Assignment part 2: Client/Server Application
+
+Included Files:
+	* digraph.h - header file containing prototypes for the methods in the Digraph class
+	* digraph.cpp - the cpp file containing the methods in the Digraph class
+	* dijkstra.cpp - The file contains: (modified)
+		- dijkstra()
+	* dijkstra.h
+	* wdigraph.h
+	* server.cpp - The file containing: (modified)
+		- void readGraph()
+		- long long manhatten()
+		- int main()
+	* README (modified)
+	* edmonton-roads-2.0.1.txt 
+	* Makefile - contains the following commands: (modified)
+		- server - the final executable file
+		- dijkstra.o - compiles the respective object
+		- digraph.o - compiles the respective object
+		- server.o - compiles the respective object
+		- clean - removes the executable and object files
+		- all - makes the server executable
+
+Accessories:
+	* None required
+
+Wiring instructions:
+	* None required
+
+Running Instructions:
+	1. Ensure that you are in the correct directory before executing the program
+	
+	2. First compile the .cpp files by typing make or make server. After you can run 
+	./server/server in one terminal window and python3 client/client.py in another terminal window.
+	python3 client/client.py will open the plotter device and the user will click on two points on the graph
+	and will send the start and end coordinates of the points clicked on the graph. server.cpp will calculate the shorest path (using dijkstra's algorithm)
+	and write the path to the pipe and the plotter will draw the path. The use can continuously click on points of the graph and the path will be written to the client
+	so that the plotter can plot it. If the plotter window is closed after finishing writing a path, the program will stop.
+
+	3. The functions in server.cpp:
+		* findClosest
+			- findClosest find the closest point to the coordinate that was passed in.
+		    Parameters:
+		      - pt: the point that we want to find the closest one to
+		      - points: all the points on our graph
+		    Return:
+		      - best.first: the closest point to the one passed
+
+		* main 
+			- Will create a WDigraph object use the readGraph function to store the vertices and edges of the graph.
+			We also initialize an unordered map to store the vertices and their respecitve latitude and longatide.
+
+			- Then we will get the starting and ending latitudes and longitudes. From there we will find the closest points to
+			the coordinates and keep them as our starting and ending vertices. Then we will use Dijkstra's algorithm to 
+			find the least cost paths that start from a given vertex and stores it in our searchTree unordered map.
+			Then we will find the least cost path between the start and ending vertex. 
+			- Uses pipes to recieve input from the plotter device and calculates the shortest path from one
+			point to another. It then sends the coordinated one byte at a time to the pipe. 
+			It writes the path of latitudes and longitudes to the pipe.
+			Parameter:
+				- None
+			Returns:
+				- 0: to signal we are done
+			- We will write an "E\n" when we are done writing the path to the pipe
+			- If the client writes another coordinate set of start and end points, we find the path and write the coordinates in the form:
+				start_latitude start_longitude
+				second_latitude second_longitude
+				.
+				.
+				.
+				end_latitude end_longitude
+			- If the client sends a 'Q', we will break from the program and close the pipes.
+		
+		* create_and_open_fifo
+			- creating a fifo special file in the current working directory
+			with read-write permissions for communication with the plotter
+			both proecsses must open the fifo before they can perform
+			read and write operations on it.
+			Parameters:
+				- pname: the name of the pipe we want to open
+				- mode: O_RDONLY for read only and O_WDONLY for write only
+
+			returns:
+				- fd: the opened fifo
+		* readGraph
+			- This function will fill the WDigraph object and read from the edmonton-roads-2.0.1.txt file to get
+			vertices and edges.
+
+			Edges will be of the form: E,vertex_1,vertex_2,street_name
+
+			Vertices will be of the form: V,vertex,lat,lon
+
+			- When it is an edge, we must calculate the manhatten distance between both vertices. 
+			We will use the manhatten function to do so.
+			- When it is a vertex, we will use the Point struct to store the latitude and longitude of the vertex in an
+			unordered map.
+			- Parameters:
+				- filename: the name of the file that describes a road network
+				- graph: an instance of the weighted directed graph (WDigraph) class
+				- points: a mapping between vertex identifiers and their coordinates
+			- Returns:
+				- None
+
+		* manhatten
+			- This function will compute the Manhattan distance between the two given points.
+			- Parameters:
+				- pt1: the point from the first vertex
+			    - pt2: the point from the second vertex
+		    - Returns:
+		    	- The Manhattan distance between the two given points
+
+	The functions in dijkstra.cpp:
+		* dijkstra
+			- Uses a priority queue to act as a min heap.
+			- efficiently retrieve an unexplored vertex that has the minimum distance from the start vertex at every iteration.
+			- stores the costs and previously connected vertex in the searchTree.
+			- We order the min heap by cost/distance.
+			- Parameters:
+			    - WDigraph: an instance of the weighted directed graph (WDigraph) class
+			    - startVertex: a vertex in this graph which serves as the root of the search tree
+			    - tree: a search tree to construct the least cost path from startVertex to some vertex
+			- Returns:
+				- None
+
+Notes and Assumptions:
+	* All assumptions have been stated
