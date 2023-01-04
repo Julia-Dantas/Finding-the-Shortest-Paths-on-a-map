@@ -13,4 +13,4 @@ Running Instructions: (assuming on Linux)
 - If the plotter window is closed after finishing writing a path, the program will stop.
 	
 
-![image](https://user-images.githubusercontent.com/90366819/210466897-2f99b8c8-86dc-4bff-ae55-6dc26ff1643e.png)
+![image](https://user-images.githubusercontent.com/90366819/210467214-51fde491-3419-4db8-8ade-027a01ce4216.png)
