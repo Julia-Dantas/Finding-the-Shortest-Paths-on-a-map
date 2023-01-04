@@ -11,4 +11,6 @@ Running Instructions: (assuming on Linux)
 4.The user may click on two points on the graph then the plotter will draw the shortest path. 	
 	- The user can continuously click on points of the graph
   	- If the plotter window is closed after finishing writing a path, the program will stop.
+	
+
 ![image](https://user-images.githubusercontent.com/90366819/210466897-2f99b8c8-86dc-4bff-ae55-6dc26ff1643e.png)
